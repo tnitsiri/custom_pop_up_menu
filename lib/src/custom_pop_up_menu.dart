@@ -192,7 +192,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
 
       //widget.controller!.showMenu();
       if(!widget.controller!.hasListeners){
-        debugPrint("_updateView()--->widget.controller!.addListener,对接内外两个不同的监听器");
+        debugPrint("_updateView()--->widget.controller!.addListener,pass the outer listener event to the inner listener");
         widget.controller!.addListener(() {
           _controller!.toggleMenu();
         });

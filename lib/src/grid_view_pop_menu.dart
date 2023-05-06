@@ -62,3 +62,68 @@ class GridViewPopMenu extends StatelessWidget {
     );
   }
 }
+
+
+class GridViewPopMenuLight extends StatelessWidget {
+  List<PopMenuItemModel> menuItems;
+  CustomPopupMenuController controller;
+  dynamic dataObj;
+  GridViewPopMenuLight({Key? key,
+    required this.menuItems,
+    required this.dataObj,
+    required this.controller})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 220,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [BoxShadow(
+              color: Colors.grey,
+              spreadRadius: 1,
+              blurRadius: 5,
+            )]
+        ),
+        child: GridView.count(
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          crossAxisCount: 5,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 10,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          children: menuItems
+              .map((item) => GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: (){
+              //debugPrint("click-->"+item.title);
+              //menuController.menuIsShowing = false;
+              // debugPrint("click--> menuController: "+controller.hashCode.toString());
+              controller.hideMenu();
+              item.callback.call(dataObj);
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  item.icon,
+                  size: 20,
+                  color: Colors.black,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 2),
+                  child: Text(
+                    item.title,
+                    style: TextStyle(color: Colors.black, fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+          ))
+              .toList(),
+        ),
+    );
+  }
+}

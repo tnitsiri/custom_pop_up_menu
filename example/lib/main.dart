@@ -90,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
             menuBuilder: () => ListViewPopMenu(menuItems: menuItems, dataObj: "添加按钮", controller: _controller),
             pressType: PressType.singleClick,
             verticalMargin: -10,
+           // arrowColor: Colors.white,
             controller: _controller,
           ),
         ],
@@ -226,7 +227,7 @@ class MessageContent extends StatelessWidget {
 
             ),
           ),
-          CustomPopupMenu(
+          QuickPopUpMenu(
             child: Container(
               padding: EdgeInsets.all(10),
               constraints: BoxConstraints(maxWidth: 240, minHeight: avatarSize),
@@ -236,13 +237,18 @@ class MessageContent extends StatelessWidget {
               ),
               child: Text(message.content),
             ),
-            menuBuilder: (){
+/*            menuBuilder: (){
              // return _buildLongPressMenu(menuController);
               return GridViewPopMenu(menuItems: menuItems, dataObj: message.content,controller: menuController,);
             },
             controller: menuController,
-            barrierColor: Colors.transparent,
+            barrierColor: Colors.transparent,*/
+            //arrowColor: Colors.white,
+            showArrow: false,
             pressType: PressType.longPress,
+            menuItems:menuItems,
+            useGridView: true,
+            dataObj: message.content,
           )
         ],
       ),
