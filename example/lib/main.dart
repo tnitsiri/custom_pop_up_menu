@@ -1,4 +1,5 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,12 +13,12 @@ class ChatModel {
   ChatModel(this.content, {this.isMe = false});
 }
 
-class ItemModel {
+/*class ItemModel {
   String title;
   IconData icon;
 
   ItemModel(this.title, this.icon);
-}
+}*/
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -41,7 +42,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late List<ChatModel> messages;
-  late List<ItemModel> menuItems;
+  late List<PopMenuItemModel> menuItems;
   CustomPopupMenuController _controller = CustomPopupMenuController();
 
   @override
@@ -67,9 +68,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ChatModel('就这？？？', isMe: true),
     ];
     menuItems = [
-      ItemModel('发起群聊', Icons.chat_bubble),
-      ItemModel('添加朋友', Icons.group_add),
-      ItemModel('扫一扫', Icons.settings_overscan),
+      //    PopMenuItemModel(title: '复制',icon: Icons.content_copy, callback: (int index, data) { debugPrint("data: "+data); }),
+      PopMenuItemModel(title: '发起群聊',icon: Icons.chat_bubble, callback: (int index, data) { debugPrint("data: "+data); }),
+      PopMenuItemModel(title: '添加朋友',icon: Icons.group_add, callback: (int index, data) { debugPrint("data: "+data); }),
+      PopMenuItemModel(title: '扫一扫',icon: Icons.settings_overscan, callback: (int index, data) { debugPrint("data: "+data); }),
     ];
     super.initState();
   }
@@ -85,55 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Icon(Icons.add_circle_outline, color: Colors.white),
               padding: EdgeInsets.all(20),
             ),
-            menuBuilder: () => ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Container(
-                color: const Color(0xFF4C4C4C),
-                child: IntrinsicWidth(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: menuItems
-                        .map(
-                          (item) => GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              print("onTap");
-                              _controller.hideMenu();
-                            },
-                            child: Container(
-                              height: 40,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(
-                                    item.icon,
-                                    size: 15,
-                                    color: Colors.white,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 10),
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 10),
-                                      child: Text(
-                                        item.title,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ),
-            ),
+            menuBuilder: () => ListViewPopMenu(menuItems: menuItems, dataObj: "添加按钮", controller: _controller),
             pressType: PressType.singleClick,
             verticalMargin: -10,
             controller: _controller,
@@ -167,18 +121,18 @@ class _MyHomePageState extends State<MyHomePage> {
 class MessageContent extends StatelessWidget {
   MessageContent(this.message);
 
-
+  CustomPopupMenuController menuController = CustomPopupMenuController();
 
   final ChatModel message;
-  List<ItemModel> menuItems = [
-    ItemModel('复制', Icons.content_copy),
-    ItemModel('转发', Icons.send),
-    ItemModel('收藏', Icons.collections),
-    ItemModel('删除', Icons.delete),
-    ItemModel('多选', Icons.playlist_add_check),
-    ItemModel('引用', Icons.format_quote),
-    ItemModel('提醒', Icons.add_alert),
-    ItemModel('搜一搜', Icons.search),
+  List<PopMenuItemModel> menuItems = [
+    PopMenuItemModel(title: '复制',icon: Icons.content_copy, callback: (int index, data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '转发', icon:Icons.send, callback: (int index, data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '收藏', icon:Icons.collections, callback: (int index, data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '删除', icon:Icons.delete, callback: (int index, data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '多选', icon:Icons.playlist_add_check, callback: (int index, data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '引用', icon:Icons.format_quote, callback: (int index, data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '提醒', icon:Icons.add_alert, callback: (int index, data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '搜一搜',icon: Icons.search, callback: (int index, data) { debugPrint("data: "+data); }),
   ];
 
   Widget _buildLongPressMenu(menuController) {
@@ -245,7 +199,7 @@ class MessageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isMe = message.isMe;
     double avatarSize = 40;
-    CustomPopupMenuController menuController = CustomPopupMenuController();
+
     return Container(
       margin: EdgeInsets.all(10),
       child: Row(
@@ -283,7 +237,8 @@ class MessageContent extends StatelessWidget {
               child: Text(message.content),
             ),
             menuBuilder: (){
-              return _buildLongPressMenu(menuController);
+             // return _buildLongPressMenu(menuController);
+              return GridViewPopMenu(menuItems: menuItems, dataObj: message.content,controller: menuController,);
             },
             controller: menuController,
             barrierColor: Colors.transparent,
