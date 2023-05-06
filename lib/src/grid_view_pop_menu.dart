@@ -30,12 +30,13 @@ class GridViewPopMenu extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           children: menuItems
               .map((item) => GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: (){
-              debugPrint("click-->"+item.title);
+              //debugPrint("click-->"+item.title);
               //menuController.menuIsShowing = false;
-              debugPrint("click--> menuController: "+controller.hashCode.toString());
+             // debugPrint("click--> menuController: "+controller.hashCode.toString());
               controller.hideMenu();
-              item.callback.call(0,dataObj);
+              item.callback.call(dataObj);
             },
             child: Column(
               mainAxisSize: MainAxisSize.min,

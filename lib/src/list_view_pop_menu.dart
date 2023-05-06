@@ -29,9 +29,9 @@ class ListViewPopMenu extends StatelessWidget {
                   (item) => GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  debugPrint("onTap-->"+dataObj.toString());
+                  //debugPrint("onTap-->"+dataObj.toString());
                   controller.hideMenu();
-                  item.callback.call(0,dataObj);
+                  item.callback.call(dataObj);
                 },
                 child: Container(
                   height: 40,

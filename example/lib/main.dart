@@ -69,9 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
     menuItems = [
       //    PopMenuItemModel(title: '复制',icon: Icons.content_copy, callback: (int index, data) { debugPrint("data: "+data); }),
-      PopMenuItemModel(title: '发起群聊',icon: Icons.chat_bubble, callback: (int index, data) { debugPrint("data: "+data); }),
-      PopMenuItemModel(title: '添加朋友',icon: Icons.group_add, callback: (int index, data) { debugPrint("data: "+data); }),
-      PopMenuItemModel(title: '扫一扫',icon: Icons.settings_overscan, callback: (int index, data) { debugPrint("data: "+data); }),
+      PopMenuItemModel(title: '发起群聊',icon: Icons.chat_bubble, callback: ( data) { debugPrint("data: "+data); }),
+      PopMenuItemModel(title: '添加朋友',icon: Icons.group_add, callback: ( data) { debugPrint("data: "+data); }),
+      PopMenuItemModel(title: '扫一扫',icon: Icons.settings_overscan, callback: ( data) { debugPrint("data: "+data); }),
     ];
     super.initState();
   }
@@ -121,18 +121,18 @@ class _MyHomePageState extends State<MyHomePage> {
 class MessageContent extends StatelessWidget {
   MessageContent(this.message);
 
-  CustomPopupMenuController menuController = CustomPopupMenuController();
+  final CustomPopupMenuController menuController = CustomPopupMenuController();
 
   final ChatModel message;
   List<PopMenuItemModel> menuItems = [
-    PopMenuItemModel(title: '复制',icon: Icons.content_copy, callback: (int index, data) { debugPrint("data: "+data); }),
-    PopMenuItemModel(title: '转发', icon:Icons.send, callback: (int index, data) { debugPrint("data: "+data); }),
-    PopMenuItemModel(title: '收藏', icon:Icons.collections, callback: (int index, data) { debugPrint("data: "+data); }),
-    PopMenuItemModel(title: '删除', icon:Icons.delete, callback: (int index, data) { debugPrint("data: "+data); }),
-    PopMenuItemModel(title: '多选', icon:Icons.playlist_add_check, callback: (int index, data) { debugPrint("data: "+data); }),
-    PopMenuItemModel(title: '引用', icon:Icons.format_quote, callback: (int index, data) { debugPrint("data: "+data); }),
-    PopMenuItemModel(title: '提醒', icon:Icons.add_alert, callback: (int index, data) { debugPrint("data: "+data); }),
-    PopMenuItemModel(title: '搜一搜',icon: Icons.search, callback: (int index, data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '复制',icon: Icons.content_copy, callback: ( data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '转发', icon:Icons.send, callback: ( data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '收藏', icon:Icons.collections, callback: ( data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '删除', icon:Icons.delete, callback: ( data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '多选', icon:Icons.playlist_add_check, callback: ( data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '引用', icon:Icons.format_quote, callback: ( data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '提醒', icon:Icons.add_alert, callback: ( data) { debugPrint("data: "+data); }),
+    PopMenuItemModel(title: '搜一搜',icon: Icons.search, callback: ( data) { debugPrint("data: "+data); }),
   ];
 
   Widget _buildLongPressMenu(menuController) {
