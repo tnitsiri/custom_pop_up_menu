@@ -17,11 +17,13 @@ class CustomPopupMenuController extends ChangeNotifier {
   bool menuIsShowing = false;
 
   void showMenu() {
+    debugPrint("showMenu--> menuController: "+this.hashCode.toString());
     menuIsShowing = true;
     notifyListeners();
   }
 
   void hideMenu() {
+    debugPrint("hideMenu--> menuController: "+this.hashCode.toString());
     menuIsShowing = false;
     notifyListeners();
   }
@@ -49,7 +51,9 @@ class CustomPopupMenu extends StatefulWidget {
     this.position,
     this.menuOnChange,
     this.enablePassEvent = true,
-  });
+  }){
+    controller??CustomPopupMenuController();
+  }
 
   final Widget child;
   final PressType pressType;
@@ -76,10 +80,11 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
   RenderBox? _childBox;
   RenderBox? _parentBox;
   OverlayEntry? _overlayEntry;
-  CustomPopupMenuController? _controller;
+  //CustomPopupMenuController? widget.controller;
   bool _canResponse = true;
 
   _showMenu() {
+    debugPrint("_showMenu()--->widget.controller:"+widget.controller.hashCode.toString());
     Widget arrow = ClipPath(
       child: Container(
         width: widget.arrowSize,
@@ -147,7 +152,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
                 Offset(offset.dx - widget.horizontalMargin, offset.dy))) {
               return;
             }
-            _controller?.hideMenu();
+            widget.controller?.hideMenu();
             // When [enablePassEvent] works and we tap the [child] to [hideMenu],
             // but the passed event would trigger [showMenu] again.
             // So, we use time threshold to solve this bug.
@@ -170,6 +175,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
   }
 
   _hideMenu() {
+    debugPrint("_hideMenu()--->");
     if (_overlayEntry != null) {
       _overlayEntry?.remove();
       _overlayEntry = null;
@@ -177,7 +183,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
   }
 
   _updateView() {
-    bool menuIsShowing = _controller?.menuIsShowing ?? false;
+    bool menuIsShowing = widget.controller?.menuIsShowing ?? false;
     widget.menuOnChange?.call(menuIsShowing);
     if (menuIsShowing) {
       _showMenu();
@@ -189,9 +195,11 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller;
-    if (_controller == null) _controller = CustomPopupMenuController();
-    _controller?.addListener(_updateView);
+    
+    //只能赋值一次,导致内外不一致. 所以state里应直接引用外部的值,不要自己维护
+    /*widget.controller = widget.controller;
+    if (widget.controller == null) widget.controller = CustomPopupMenuController();*/
+    widget.controller?.addListener(_updateView);
     WidgetsBinding.instance.addPostFrameCallback((call) {
       if (mounted) {
         _childBox = context.findRenderObject() as RenderBox?;
@@ -204,7 +212,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
   @override
   void dispose() {
     _hideMenu();
-    _controller?.removeListener(_updateView);
+    widget.controller?.removeListener(_updateView);
     super.dispose();
   }
 
@@ -219,12 +227,12 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
         child: widget.child,
         onTap: () {
           if (widget.pressType == PressType.singleClick && _canResponse) {
-            _controller?.showMenu();
+            widget.controller?.showMenu();
           }
         },
         onLongPress: () {
           if (widget.pressType == PressType.longPress && _canResponse) {
-            _controller?.showMenu();
+            widget.controller?.showMenu();
           }
         },
       ),

@@ -167,6 +167,8 @@ class _MyHomePageState extends State<MyHomePage> {
 class MessageContent extends StatelessWidget {
   MessageContent(this.message);
 
+
+
   final ChatModel message;
   List<ItemModel> menuItems = [
     ItemModel('复制', Icons.content_copy),
@@ -179,7 +181,7 @@ class MessageContent extends StatelessWidget {
     ItemModel('搜一搜', Icons.search),
   ];
 
-  Widget _buildLongPressMenu() {
+  Widget _buildLongPressMenu(menuController) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: Container(
@@ -193,23 +195,31 @@ class MessageContent extends StatelessWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           children: menuItems
-              .map((item) => Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Icon(
-                        item.icon,
-                        size: 20,
-                        color: Colors.white,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 2),
-                        child: Text(
-                          item.title,
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                        ),
-                      ),
-                    ],
-                  ))
+              .map((item) => GestureDetector(
+            onTap: (){
+              debugPrint("click-->"+item.title);
+              //menuController.menuIsShowing = false;
+              debugPrint("click--> menuController: "+menuController.hashCode.toString());
+              menuController.hideMenu();
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  item.icon,
+                  size: 20,
+                  color: Colors.white,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 2),
+                  child: Text(
+                    item.title,
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+          ))
               .toList(),
         ),
       ),
@@ -235,7 +245,7 @@ class MessageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isMe = message.isMe;
     double avatarSize = 40;
-
+    CustomPopupMenuController menuController = CustomPopupMenuController();
     return Container(
       margin: EdgeInsets.all(10),
       child: Row(
@@ -249,16 +259,17 @@ class MessageContent extends StatelessWidget {
               menuBuilder: () => GestureDetector(
                 child: _buildAvatar(isMe, 100),
                 onLongPress: () {
-                  print("onLongPress");
+                  debugPrint("onLongPress");
                 },
                 onTap: () {
-                  print("onTap");
+                  debugPrint("onTap");
                 },
               ),
               barrierColor: Colors.transparent,
               pressType: PressType.singleClick,
               arrowColor: isMe ? Colors.blueAccent : Colors.pinkAccent,
               position: PreferredPosition.top,
+
             ),
           ),
           CustomPopupMenu(
@@ -271,7 +282,10 @@ class MessageContent extends StatelessWidget {
               ),
               child: Text(message.content),
             ),
-            menuBuilder: _buildLongPressMenu,
+            menuBuilder: (){
+              return _buildLongPressMenu(menuController);
+            },
+            controller: menuController,
             barrierColor: Colors.transparent,
             pressType: PressType.longPress,
           )

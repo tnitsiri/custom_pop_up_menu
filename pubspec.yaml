@@ -1,9 +1,9 @@
-name: custom_pop_up_menu
-description: Wrap a widget with CustomPopupMenu, Tap or Long Press this widget, a popup menu would display in a suitable position. 
-repository: https://github.com/malikwang/custom_pop_up_menu
-homepage: https://github.com/malikwang/custom_pop_up_menu
+name: custom_pop_up_menu_fork
+description: Wrap a widget with CustomPopupMenu, Tap or Long Press this widget, a popup menu would display in a suitable position. fix for https://github.com/malikwang/custom_pop_up_menu
+repository: https://github.com/skyNet2017/custom_pop_up_menu
+homepage: https://github.com/skyNet2017/custom_pop_up_menu
 
-version: 1.2.4
+version: 2.0.0
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
