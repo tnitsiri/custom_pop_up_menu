@@ -51,8 +51,8 @@ class CustomPopupMenu extends StatefulWidget {
     this.position,
     this.menuOnChange,
     this.enablePassEvent = true,
-  }){
-    controller??CustomPopupMenuController();
+  }) {
+    controller ?? CustomPopupMenuController();
   }
 
   final Widget child;
@@ -184,20 +184,20 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
 
   _updateView() {
     //debugPrint("_updateView()--->_controller-"+_controller.toString()+"@"+_controller.hashCode.toString()
-     //   +", widget.controller: "+ widget.controller.toString()+"@"+widget.controller.hashCode.toString());
+    //   +", widget.controller: "+ widget.controller.toString()+"@"+widget.controller.hashCode.toString());
 //_updateView()--->_controller-Instance of 'CustomPopupMenuController'@968634764, widget.controller: Instance of 'CustomPopupMenuController'@1068823743
-    if(widget.controller != null && widget.controller != _controller){
+    if (widget.controller != null && widget.controller != _controller) {
       // widget.controller!.addListener(_updateView);
       //_controller = widget.controller;
 
       //widget.controller!.showMenu();
-      if(!widget.controller!.hasListeners){
-        debugPrint("_updateView()--->widget.controller!.addListener,pass the outer listener event to the inner listener");
+      if (!widget.controller!.hasListeners) {
+        debugPrint(
+            "_updateView()--->widget.controller!.addListener,pass the outer listener event to the inner listener");
         widget.controller!.addListener(() {
           _controller!.toggleMenu();
         });
       }
-
     }
 
     bool menuIsShowing = _controller?.menuIsShowing ?? false;
@@ -207,7 +207,6 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
     } else {
       _hideMenu();
     }
-
   }
 
   @override
@@ -261,13 +260,20 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
     if (Platform.isIOS) {
       return child;
     } else {
-      return WillPopScope(
-        onWillPop: () {
+      return PopScope(
+        onPopInvoked: (bool didPop) {
           _hideMenu();
-          return Future.value(true);
         },
         child: child,
       );
+
+      // return WillPopScope(
+      //   onWillPop: () {
+      //     _hideMenu();
+      //     return Future.value(true);
+      //   },
+      //   child: child,
+      // );
     }
   }
 }
